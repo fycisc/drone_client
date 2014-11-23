@@ -22,12 +22,15 @@ public class publicvar : MonoBehaviour {
 	public static bool isloadfromLonLat = false;
 	public static int SizeX = 20;
 	public static int SizeZ = 20;
-	public static int maxTileX = 4;
-	public static int maxTileY = 2;
+	public static int maxTileX = 1;
+	public static int maxTileY = 1;
+	public static int heightmapres = 65;
+	public static float maxHeight = 2000;
+
 
 	public Dictionary<string, Terrain> terrains = new Dictionary<string, Terrain> ();
 	public Dictionary<string, airobj> airs= new Dictionary<string, airobj >();
-
+//	public HeightmapLoader heightsloader = new HeightmapLoader();
 
 
 	void Start(){

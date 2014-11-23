@@ -45,7 +45,7 @@ public class airobj
 
 		go.transform.position = new Vector3(loc[0], height,loc[2]);
 		go.transform.Rotate(new Vector3 (0, 0, 0));
-		Debug.Log ("yaw: " + yaw);
+//		Debug.Log ("yaw: " + yaw);
 		
 //        go.gameObject.SetActive(true);
 	}

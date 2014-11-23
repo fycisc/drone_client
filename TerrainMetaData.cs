@@ -10,6 +10,8 @@ public class TerrainMetaData
 	public float latmax = 32f;
 	public float lonmin = 117f;
 	public float lonmax = 118f;
+	public int i;
+	public int j;
 
 	public TerrainMetaData(float width, float length){
 		this.width = width;

@@ -12,6 +12,7 @@ public class EventsHandler: MonoBehaviour{
 	private Dictionary<string, airobj> airs;
 	private AirManager airmanager;
 	private publicvar publicv;
+	private HeightmapLoader heightsloader;
 	public GameObject originairplane;
 	
 	void Start(){
@@ -27,6 +28,16 @@ public class EventsHandler: MonoBehaviour{
 		airmanager.originair = this.originairplane;
 		airmanager.airs = publicv.airs;
 
+		heightsloader = gameObject.AddComponent<HeightmapLoader> ();
+		heightsloader.terrainstoload = new Queue ();
+
+		StartCoroutine (Startloadheightmap());
+	}
+
+	IEnumerator Startloadheightmap(){
+		yield return new WaitForSeconds (10);
+		heightsloader.Startload ();
+		yield break;
 	}
 	
 	void OnEnable(){

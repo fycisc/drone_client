@@ -33,27 +33,27 @@ public class map //: MonoBehaviour
 
 	// given 
 	public static float[] getUnityPosfromLatlng(float lon, float lat, int zoom){
-//		return new float[] {0,0,0};
-
+		//		return new float[] {0,0,0};
+		
 		// get lon, lat length
 		float lonlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[0]-XYToLonLat(publicvar.basei+publicvar.mergenum,publicvar.basej,zoom)[0]);
 		float latlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[1]-XYToLonLat(publicvar.basei,publicvar.basej+publicvar.mergenum,zoom)[1]);
-
+		
 		// given lon lat
 		// get tileNum
 		int[] tileNum = lnglatToXY (lon, lat, zoom);
-
+		
 		// get tilelon tilelat of tile top-left
 		float[] LonlatTopleft = XYToLonLat (tileNum [0], tileNum [1], zoom);
-
+		
 		// get delta of the lon, lat
 		float[] deltaLonlat = new float[] {lon- LonlatTopleft[0],lat-LonlatTopleft[1]};
-
+		
 		// get x,z of topleft
 		float[] posTopleft = new float[]{((tileNum [0] - publicvar.basei) / publicvar.mergenum - 0.5f) * publicvar.lengthmesh,
 			(-(tileNum [1] - publicvar.basej) / publicvar.mergenum + 0.5f) * publicvar.lengthmesh,
 		};
-
+		
 		// get x,z of the given lon,lat
 		float[] position = new float[]{
 			posTopleft[0]+publicvar.lengthmesh*deltaLonlat[0]/lonlength,
@@ -62,21 +62,19 @@ public class map //: MonoBehaviour
 		return new float[]{
 			position[0], 0, position[1]
 		};
-	
+		
 	}
 
 
 
-
-
-	public static int[] getNumTile(float x, float z,int centerX, int centerY, float lengthMesh, int mergenum){
-		int[] tileNum = new int[2];
-		// tileX
-		tileNum [0] = Mathf.FloorToInt(Mathf.RoundToInt (2.0f * x / lengthMesh) / 2 ) * mergenum + centerX;
-		//tileY
-		tileNum [1] = -Mathf.FloorToInt( Mathf.RoundToInt (2.0f * z / lengthMesh) / 2) * mergenum + centerY;
-		return tileNum;
-	}
+//	public static int[] getNumTile(float x, float z,int centerX, int centerY, float lengthMesh, int mergenum){
+//		int[] tileNum = new int[2];
+//		// tileX
+//		tileNum [0] = Mathf.FloorToInt(Mathf.RoundToInt (2.0f * x / lengthMesh) / 2 ) * mergenum + centerX;
+//		//tileY
+//		tileNum [1] = -Mathf.FloorToInt( Mathf.RoundToInt (2.0f * z / lengthMesh) / 2) * mergenum + centerY;
+//		return tileNum;
+//	}
 
 }
 

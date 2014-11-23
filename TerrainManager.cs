@@ -9,6 +9,7 @@ public class TerrainManager : MonoBehaviour
 	// a manager only manage the tiles around one aircraft
 
 	public Dictionary<string, Terrain> terrains;
+	public HeightmapLoader heightsloader;
 	public int maxTileX ; // tiles farther than this will be destroyed
 	public int maxTileY ; // tiles farther than this will be destroyed
 	public int basei ;
@@ -25,30 +26,36 @@ public class TerrainManager : MonoBehaviour
 		basej = publicvar.basej;
 		maxTileX = publicvar.maxTileX;
 		maxTileY = publicvar.maxTileY;
+		heightsloader = GameObject.Find("Connecter").GetComponent<HeightmapLoader>();
 	}
 
 	public Terrain NewTerrainData(TerrainMetaData mdata, TextureData tdata, HeightmapMetaData hdata){
 		TerrainData terraindata = new TerrainData ();
-		GameObject terrainobject = Terrain.CreateTerrainGameObject (terraindata);
-		Terrain terrain = terrainobject.GetComponent<Terrain> ();
+
 
 		// set some paras of the terrainTile
-		_InitTerrain(terrain.terrainData, mdata, hdata);
-		// register to the manager
-		terrains.Add(str(tdata.i,tdata.j), terrain);
+		_InitTerrain(terraindata, mdata, hdata);
+
 		// start a coroutine to load the texture
 		StartCoroutine(loadTexture(tdata, terraindata));
-		// start a coroutine to load the heightmap
-		StartCoroutine (loadHeightmap (hdata, terrain.terrainData));
+
+		heightsloader.Enqueue (terraindata, tdata);
 
 		float[] xz = getPos (tdata.i, tdata.j);
-		terrain.terrainData.size = new Vector3 (publicvar.lengthmesh, 2000, publicvar.lengthmesh);
+		GameObject terrainobject = Terrain.CreateTerrainGameObject (terraindata);
+		Terrain terrain = terrainobject.GetComponent<Terrain> ();
+		terraindata.size = new Vector3 (publicvar.lengthmesh, publicvar.maxHeight, publicvar.lengthmesh);
 		terrain.transform.position = new Vector3 (xz[0],0,xz[1]);
+		
 
-		Debug.Log ("terrain postion:" + terrain.transform.position);
-		Debug.Log ("terrain i j " + tdata.i + ","+ tdata.j);
-		Debug.Log ("basei: " + basei + " ,basej: " + basej);
+		// register to the manager
+		terrains.Add(str(tdata.i,tdata.j), terrain);
 
+//		Debug.Log ("terrain postion:" + terrain.transform.position);
+//		Debug.Log ("terrain i j " + tdata.i + ","+ tdata.j);
+//		Debug.Log ("basei: " + basei + " ,basej: " + basej);
+//		System.Threading.Thread.Sleep (500);
+//		heightsloader.Startload ();
 		return terrain;
 	}
 
@@ -90,7 +97,7 @@ public class TerrainManager : MonoBehaviour
 		int[] center;
 		while (true) {
 			//wait for a second
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(3);
 			Debug.Log ("count"+terrains.Count);
 			// clear remote tiles
 			center = getCurrentTile(plane);
@@ -151,16 +158,9 @@ public class TerrainManager : MonoBehaviour
 
 
 	private void _InitTerrain(TerrainData tdata, TerrainMetaData mdata, HeightmapMetaData hdata){
-//		tdata.detailWidth = mdata.width;
-//		tdata.detailHeight = mdata.length;
-//		tdata.heightmapWidth = hdata.width;
-//		tdata.heightmapHeight = hdata.length;
+		tdata.heightmapResolution = publicvar.heightmapres;
 	}
-
-	IEnumerator loadHeightmap(HeightmapMetaData hdata, TerrainData terraindata){
-		// TODO
-		yield return 0;
-	}
+	
 
 	IEnumerator loadTexture(TextureData tdata, TerrainData terraindata){
 		int i = tdata.i;
@@ -190,7 +190,7 @@ public class TerrainManager : MonoBehaviour
 			string url = remotemapurl(i,j,publicvar.zoom);
 			www=new WWW(url);
 			yield return www;
-			Debug.Log(url);
+//			Debug.Log(url);
 			if (www.error != null ){
 				print("Error:"+ www.error);
 				yield return www;
@@ -210,7 +210,6 @@ public class TerrainManager : MonoBehaviour
 
 				www.Dispose();
 				www =null;
-//				Debug.Log("Texture Released. Total memory" + GC.GetTotalMemory(true));
 			}
 		}
 	}
@@ -218,10 +217,11 @@ public class TerrainManager : MonoBehaviour
 	protected string remotemapurl(int i, int j, int zoom){
 		return string.Format ("https://api.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{0}/{1}/{2}.jpg",zoom, i, j);
 	}
+
 	protected string mappath(int i,int j){
 		return "hehe";
 	}
-
+	
 	protected float[] getPos(int i, int j){
 		float[] xy = new float[]{0f,0f};
 		xy [0] = (i - basei) * publicvar.lengthmesh;
@@ -244,5 +244,20 @@ public class TerrainManager : MonoBehaviour
 		return String.Format ("{0},{1}", i, j);
 	}
 
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
