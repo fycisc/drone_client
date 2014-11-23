@@ -5,20 +5,23 @@ using LitJson;
 
 public class AirManager : MonoBehaviour
 {
-	public Dictionary<string, airobj> airs = new Dictionary<string, airobj >();
+	public Dictionary<string, airobj> airs;
 	public GameObject originair;
 
 
-
 	public airobj CreateAir(string name, GameObject originair, JsonData jd){
-		return new airobj (name, originair, jd);
+		airobj air = new airobj (name, originair, jd);
+		airs [name] = air;
+		return air;
 	}
 
-	public int UpdateAir(JsonData jd){
+	public int UpdateAir(string name, JsonData jd){
 		foreach (DictionaryEntry entry in jd) {
-			string name = (string)entry.Key;
-			JsonData data = (JsonData) entry.Value;
-			airs[name].update(data);
+//			JsonData data = (JsonData) entry.Value;
+//			Debug.Log(jd.ToJson());
+			airs[name].update(jd);
+		
+		
 			return 0;
 		}
 		return -1;
@@ -26,11 +29,13 @@ public class AirManager : MonoBehaviour
 	}
 
 	public int UpdateOrCreate(JsonData jd){
+		Debug.Log (airs.ToString ());
 		foreach (DictionaryEntry entry  in jd) {
 			string name = (string)entry.Key;
 			JsonData data = (JsonData) entry.Value;
+			Debug.Log(name);
 			if (airs.ContainsKey(name)) {
-				UpdateAir(data);
+				UpdateAir(name,data);
 			}		
 			else{
 				CreateAir(name, originair, data);
@@ -39,6 +44,16 @@ public class AirManager : MonoBehaviour
 			return 0;
 		}
 		return -1;
+
+//		string name = (string) jd["name"];
+//		if (airs.ContainsKey(name)) {
+//			UpdateAir(jd);
+//		}		
+//		else{
+//			CreateAir(name, originair, jd);
+//		}
+//
+//		return 0;
 	}
 
 	public void DestroyAir(string name){

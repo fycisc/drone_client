@@ -9,25 +9,23 @@ public class EventsHandler: MonoBehaviour{
 		
 //	public static Dictionary<string,airobj> aircluster= new Dictionary<string,airobj>();
 //	private Dictionary<int[], Terrain> terrains = publicvar.terrains;
-	private Dictionary<string, airobj> airs = publicvar.airs;
+	private Dictionary<string, airobj> airs;
 	private AirManager airmanager;
-
+	private publicvar publicv;
 	public GameObject originairplane;
-
-
-
-
-
+	
 	void Start(){
 		// register the events	
 		connect.connected += this.OnConnected;
 		connect.report += this.OnReport;
 		connect.receiveGamedata += this.OnReceiveGamedata;
 
-		airmanager = new AirManager{
-			originair = originairplane,
-			airs = this.airs
-		};
+		publicv = gameObject.AddComponent<publicvar> ();
+		publicv.originairplane1 = this.originairplane;
+
+		airmanager = gameObject.AddComponent<AirManager> ();
+		airmanager.originair = this.originairplane;
+		airmanager.airs = publicv.airs;
 
 	}
 	
@@ -47,7 +45,10 @@ public class EventsHandler: MonoBehaviour{
 	}
 
 	void OnReceiveGamedata(JsonData jd){
+	
 		airmanager.UpdateOrCreate (jd);
+		
+
 	}
 
 	void OnDisable(){

@@ -81,6 +81,7 @@ public class connect: MonoBehaviour
     	}
     	catch{
     		Debug.Log("key 'event' should be included ");
+			Debug.Log(origindata.ToJson());
     	}
     	try{
     		data = (JsonData) origindata["data"];
@@ -103,7 +104,7 @@ public class connect: MonoBehaviour
 		clientSocket.Send(Encoding.ASCII.GetBytes(sendMessage));
 	}
 
-	private static ManualResetEvent receiveDone =  new ManualResetEvent(false);
+//	private static ManualResetEvent receiveDone =  new ManualResetEvent(false);
 
 	void test()
 	{
@@ -132,7 +133,7 @@ public class connect: MonoBehaviour
 		}
 		catch
 		{
-			game0gui.gamelog("连接服务器失败，重新连接中");
+			Debug.Log("连接服务器失败，重新连接中");
 		}
 
 	}

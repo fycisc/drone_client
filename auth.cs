@@ -29,10 +29,12 @@ public class  auth: MonoBehaviour
 			game0gui.gamelog("认证失败");
 		}
 	}
+
 	public auth(connect Connect)
 	{
 		this.Connect = Connect;
 	}
+
 	public void wait(string resp)
 	{
 		try

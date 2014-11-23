@@ -53,10 +53,13 @@ public class airobj
 	{
     	go = (GameObject)MonoBehaviour.Instantiate( originairplane);
 		go.SetActive (true);
-		GameObject script = GameObject.Find("Script");
-		script.GetComponent<cameraControl> ().camera2 = go.GetComponentInChildren<Camera>().gameObject;
+
+//		GameObject script = GameObject.Find("Script");
+//		script.GetComponent<cameraControl> ().camera2 = go.GetComponentInChildren<Camera>().gameObject;
 		update(jd);
-		this.terrainmanager = new TerrainManager(go);
+		this.go.AddComponent("TerrainManager");
+		TerrainManager terrainmanager = this.go.GetComponent<TerrainManager>();
+		terrainmanager.plane = go;
 		terrainmanager.StartUpdate ();
 	}
 
