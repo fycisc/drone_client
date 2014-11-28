@@ -5,7 +5,7 @@ using System.Collections;
 public class TextureData
 {
 
-	public int zoom = 17;
+	public int zoom = publicvar.zoom;
 	public int i = 26969;
 	public int j = 12419;
 

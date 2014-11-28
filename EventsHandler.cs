@@ -6,6 +6,7 @@ using LitJson;
 using System.Globalization;
 
 public class EventsHandler: MonoBehaviour{
+	// THIS IS THE CORE OF THE ENTIRE GAME
 		
 //	public static Dictionary<string,airobj> aircluster= new Dictionary<string,airobj>();
 //	private Dictionary<int[], Terrain> terrains = publicvar.terrains;
@@ -17,12 +18,18 @@ public class EventsHandler: MonoBehaviour{
 	
 	void Start(){
 		// register the events	
+
 		connect.connected += this.OnConnected;
 		connect.report += this.OnReport;
 		connect.receiveGamedata += this.OnReceiveGamedata;
 
 		publicv = gameObject.AddComponent<publicvar> ();
 		publicv.originairplane1 = this.originairplane;
+		int i =map.lnglatToXY(publicvar.longitude,publicvar.latitude,publicvar.zoom)[0];
+		int j=  map.lnglatToXY(publicvar.longitude,publicvar.latitude,publicvar.zoom)[1];
+		publicvar.basei = i;
+		publicvar.basej = j;
+		Debug.Log ("basei ,basej: " + i + " " + j);
 
 		airmanager = gameObject.AddComponent<AirManager> ();
 		airmanager.originair = this.originairplane;
@@ -32,10 +39,18 @@ public class EventsHandler: MonoBehaviour{
 		heightsloader.terrainstoload = new Queue ();
 
 		StartCoroutine (Startloadheightmap());
+
+//		createtestair ();
+
 	}
+//
+//	public void createtestair(){
+//
+//		airobj airplane = new airobj(GameObject.Find("airplane"));
+//	}
 
 	IEnumerator Startloadheightmap(){
-		yield return new WaitForSeconds (10);
+		yield return new WaitForSeconds (5);
 		heightsloader.Startload ();
 		yield break;
 	}

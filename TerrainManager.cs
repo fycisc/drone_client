@@ -31,8 +31,6 @@ public class TerrainManager : MonoBehaviour
 
 	public Terrain NewTerrainData(TerrainMetaData mdata, TextureData tdata, HeightmapMetaData hdata){
 		TerrainData terraindata = new TerrainData ();
-
-
 		// set some paras of the terrainTile
 		_InitTerrain(terraindata, mdata, hdata);
 
@@ -46,8 +44,7 @@ public class TerrainManager : MonoBehaviour
 		Terrain terrain = terrainobject.GetComponent<Terrain> ();
 		terraindata.size = new Vector3 (publicvar.lengthmesh, publicvar.maxHeight, publicvar.lengthmesh);
 		terrain.transform.position = new Vector3 (xz[0],0,xz[1]);
-		
-
+		terrain.gameObject.GetComponent<TerrainCollider> ().isTrigger = true;
 		// register to the manager
 		terrains.Add(str(tdata.i,tdata.j), terrain);
 
@@ -101,7 +98,7 @@ public class TerrainManager : MonoBehaviour
 			Debug.Log ("count"+terrains.Count);
 			// clear remote tiles
 			center = getCurrentTile(plane);
-			Debug.Log ("current tile--- basei: " + center[0] + "  basej: "+center[1]);
+			Debug.Log ("current tile--- i: " + center[0] + "  j: "+center[1]);
 			StartCoroutine(ClearRemoteTiles(center));
 			
 			//wait for a second 
@@ -165,7 +162,7 @@ public class TerrainManager : MonoBehaviour
 	IEnumerator loadTexture(TextureData tdata, TerrainData terraindata){
 		int i = tdata.i;
 		int j = tdata.j;
-		string path = mappath(i,j);
+		string path = mappath(i,j, publicvar.zoom);
 		FileInfo fi1 = new FileInfo(path);   
 		WWW www;
 		// file exists. Load from local cache.
@@ -179,7 +176,12 @@ public class TerrainManager : MonoBehaviour
 			}
 			else
 			{
-				renderer.material.mainTexture = www.texture;
+				var splats = new SplatPrototype[1];
+				splats[0] = new SplatPrototype();
+				splats[0].texture = www.texture;
+				splats[0].tileSize = new Vector2(publicvar.lengthmesh, publicvar.lengthmesh);
+				
+				terraindata.splatPrototypes = splats;
 				www.Dispose();
 				www =null;
 			}
@@ -196,17 +198,19 @@ public class TerrainManager : MonoBehaviour
 				yield return www;
 			}
 			else{
-				Debug.Log("Texture Loaded. Total memory" + GC.GetTotalMemory(true));
-				if (!Directory.Exists(Application.dataPath+"/map" )){ //判断文件夹是否已经存在
-					Directory.CreateDirectory(Application.dataPath+"/map");
-				}
-				
+//				Debug.Log("Texture Loaded. Total memory" + GC.GetTotalMemory(true));
+//				if (!Directory.Exists(Application.dataPath+"/map" )){ //判断文件夹是否已经存在
+//					Directory.CreateDirectory(Application.dataPath+"/map");
+//				}
+//				
 				var splats = new SplatPrototype[1];
 				splats[0] = new SplatPrototype();
 				splats[0].texture = www.texture;
 				splats[0].tileSize = new Vector2(publicvar.lengthmesh, publicvar.lengthmesh);
 
 				terraindata.splatPrototypes = splats;
+				byte[] jpgData = www.texture.EncodeToJPG();
+				File.WriteAllBytes(path, jpgData);
 
 				www.Dispose();
 				www =null;
@@ -218,8 +222,11 @@ public class TerrainManager : MonoBehaviour
 		return string.Format ("https://api.tiles.mapbox.com/v3/examples.map-qfyrx5r8/{0}/{1}/{2}.jpg",zoom, i, j);
 	}
 
-	protected string mappath(int i,int j){
-		return "hehe";
+	protected string mappath(int i,int j, int zoom){
+		string derictorypath = Application.dataPath + string.Format ("/Resources/map/{0}", zoom);
+		if (!Directory.Exists(derictorypath)) 
+			Directory.CreateDirectory(derictorypath);
+		return string.Format(Application.dataPath + "/Resources/map/{0}/{1}_{2}.jpg", zoom, i, j);
 	}
 	
 	protected float[] getPos(int i, int j){
@@ -246,18 +253,6 @@ public class TerrainManager : MonoBehaviour
 
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

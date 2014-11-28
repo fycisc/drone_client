@@ -200,7 +200,7 @@ public class connect: MonoBehaviour
 		}
 		catch (Exception e)
 		{
-			Console.WriteLine(e.ToString());
+			System.Console.WriteLine(e.ToString());
 		}
 	}
 	// Update is called once per frame

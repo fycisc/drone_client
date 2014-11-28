@@ -53,8 +53,8 @@ public class  auth: MonoBehaviour
 				game0gui.gamelog("认证成功");
 				publicvar.lengthmesh = (float) (double) data["lengthmesh"];
 				publicvar.loadwidth = (int) data["loadwidth"];
-				publicvar.basei = (int) data["basei"];
-				publicvar.basej = (int) data["basej"];
+//				publicvar.basei = (int) data["basei"];
+//				publicvar.basej = (int) data["basej"];
 
 				JsonData authmes = new JsonData();
 				authmes["type"]="status";
