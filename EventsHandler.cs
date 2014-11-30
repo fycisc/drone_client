@@ -13,30 +13,44 @@ public class EventsHandler: MonoBehaviour{
 	private Dictionary<string, airobj> airs;
 	private AirManager airmanager;
 	private publicvar publicv;
-	private HeightmapLoader heightsloader;
+	private HeightmapLoader heightmaploader;
 	public GameObject originairplane;
 	
 	void Start(){
-		// register the events	
+	// 1. register the events	
 
 		connect.connected += this.OnConnected;
 		connect.report += this.OnReport;
 		connect.receiveGamedata += this.OnReceiveGamedata;
 
-		publicv = gameObject.AddComponent<publicvar> ();
-		publicv.originairplane1 = this.originairplane;
+//		publicv = gameObject.AddComponent<publicvar> ();
+
+	// 2. Initialize Global varibles
+		try{
+			publicv = GameObject.Find ("publicvar").GetComponent<publicvar> ();
+		}catch (Exception ex){
+			print("Gameobject named publicvar not found! \n  " +ex.Message);
+		}
+
+		if (publicv.originairplane1 == null) {
+			publicv.originairplane1 = this.originairplane;	
+			}
+
 		int i =map.lnglatToXY(publicvar.longitude,publicvar.latitude,publicvar.zoom)[0];
 		int j=  map.lnglatToXY(publicvar.longitude,publicvar.latitude,publicvar.zoom)[1];
 		publicvar.basei = i;
 		publicvar.basej = j;
 		Debug.Log ("basei ,basej: " + i + " " + j);
 
-		airmanager = gameObject.AddComponent<AirManager> ();
+	// 3. Initialize Air manager
+//		airmanager = gameObject.AddComponent<AirManager> ();
+		airmanager = GameObject.Find ("AirManager").GetComponent<AirManager> ();
 		airmanager.originair = this.originairplane;
 		airmanager.airs = publicv.airs;
 
-		heightsloader = gameObject.AddComponent<HeightmapLoader> ();
-		heightsloader.terrainstoload = new Queue ();
+	// 4. Initialize HeightmapLoader
+//		heightsloader = gameObject.AddComponent<HeightmapLoader> ();
+		heightmaploader = GameObject.Find ("HeightmapLoader").GetComponent<HeightmapLoader> ();
 
 		StartCoroutine (Startloadheightmap());
 
@@ -50,8 +64,8 @@ public class EventsHandler: MonoBehaviour{
 //	}
 
 	IEnumerator Startloadheightmap(){
-		yield return new WaitForSeconds (5);
-		heightsloader.Startload ();
+		yield return new WaitForSeconds (8);
+		heightmaploader.Startload ();
 		yield break;
 	}
 	

@@ -33,8 +33,6 @@ public class map //: MonoBehaviour
 
 	// given 
 	public static float[] getUnityPosfromLatlng(float lon, float lat, int zoom){
-		//		return new float[] {0,0,0};
-		
 		// get lon, lat length
 		float lonlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[0]-XYToLonLat(publicvar.basei+publicvar.mergenum,publicvar.basej,zoom)[0]);
 		float latlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[1]-XYToLonLat(publicvar.basei,publicvar.basej+publicvar.mergenum,zoom)[1]);
@@ -64,17 +62,6 @@ public class map //: MonoBehaviour
 		};
 		
 	}
-
-
-
-//	public static int[] getNumTile(float x, float z,int centerX, int centerY, float lengthMesh, int mergenum){
-//		int[] tileNum = new int[2];
-//		// tileX
-//		tileNum [0] = Mathf.FloorToInt(Mathf.RoundToInt (2.0f * x / lengthMesh) / 2 ) * mergenum + centerX;
-//		//tileY
-//		tileNum [1] = -Mathf.FloorToInt( Mathf.RoundToInt (2.0f * z / lengthMesh) / 2) * mergenum + centerY;
-//		return tileNum;
-//	}
-
+	
 }
 

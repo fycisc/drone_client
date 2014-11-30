@@ -18,9 +18,9 @@ public class publicvar : MonoBehaviour {
 	public static float lengthmesh = 2296.26f*Mathf.Pow(2,17-zoom);//2304.68f;
     public static int loadwidth = 5;
 	public static int mergenum = 1;
-	public static float longitude = 121.0727906227f; //dashushan
-	public static float latitude = 41.1472260440f;
-	public static int zoom = 14;
+	public static float longitude = 117.2688041888f;//137f; //dashushan
+	public static float latitude = 31.8371046436f;//41.1472260440f;
+	public static int zoom = 10;
 	public static bool isloadfromLonLat = false;
 	public static int SizeX = 20;
 	public static int SizeZ = 20;
@@ -30,12 +30,14 @@ public class publicvar : MonoBehaviour {
 	public static float maxHeight = 2000;
 
 
-	public Dictionary<string, Terrain> terrains = new Dictionary<string, Terrain> ();
-	public Dictionary<string, airobj> airs= new Dictionary<string, airobj >();
+	public Dictionary<string, Terrain> terrains ;
+	public Dictionary<string, airobj> airs;
 //	public HeightmapLoader heightsloader = new HeightmapLoader();
 
 
 	void Start(){
-		
+		airs= new Dictionary<string, airobj >();
+		terrains = new  Dictionary<string, Terrain> ();
 	}
+	
 }

@@ -17,6 +17,7 @@ public class Terrainunit{
 public class HeightmapLoader : MonoBehaviour
 {
 	public Queue terrainstoload = new Queue();
+	private int count; // the count of terrianstoload
 	private bool isloading = false;
 	private	bool isbusy = false;
 
@@ -24,22 +25,21 @@ public class HeightmapLoader : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-//		terrainstoload;	
-//		isloading = false;
+		this.terrainstoload = new Queue ();
+		this.count = 0;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-
+		this.count = terrainstoload.Count;
 	}
 
 	public void Startload(){
-		if (isloading == true) {
-			return;
-				}
-		isloading = true;
-		StartCoroutine (LoadingHeightmap());
+		if (!isloading) {
+			isloading = true;
+			StartCoroutine (LoadingHeightmap());
+		}
 	}
 
 	public void Stopload(){
@@ -53,13 +53,16 @@ public class HeightmapLoader : MonoBehaviour
 
 		Terrainunit terrainunit ;
 		while (true) {
-			if(terrainstoload.Count >0 && isbusy == false){
+			// operate once a frame
+			if(count >0 && !isbusy){
 				terrainunit = (Terrainunit)terrainstoload.Dequeue();
 				isbusy = true;
 				StartCoroutine(loadHeightmap(terrainunit.tdata, terrainunit.terraindata));
+				// wait for next frame
 				yield return 0;
 			}
 			else {
+				// wait for next frame
 				yield return 0;
 			}
 
@@ -79,6 +82,9 @@ public class HeightmapLoader : MonoBehaviour
 		FileInfo finfo = new FileInfo (localpath);
 		int res = publicvar.heightmapres;
 		float[,] heights = new float[res, res];
+		TimeSpan timeOld ;
+		TimeSpan timeNow ;
+		TimeSpan deltaTime;
 
 		for (int i = 0; i < res; i++) {
 			for (int j = 0; j < res; j++) {
@@ -86,7 +92,7 @@ public class HeightmapLoader : MonoBehaviour
 			}
 		}
 
-		if (finfo.Exists) {
+		if (finfo.Exists) { 
 			WWW www =new WWW("file://" + finfo.FullName);
 			yield return www;
 			byte[] buff = www.bytes;
@@ -94,6 +100,7 @@ public class HeightmapLoader : MonoBehaviour
 			int index = 0;
 			for(int i = res-1; i>=0; i--)  
 			{  
+				timeOld = new TimeSpan(DateTime.Now.Ticks);
 				for(int j = 0; j<res; j++)  
 				{  
 					try{
@@ -101,21 +108,28 @@ public class HeightmapLoader : MonoBehaviour
 						if (heights[i,j]>60000) {
 							heights[i,j] = 0;
 						}
-						Debug.Log(heights[i,j]);
+//						Debug.Log(heights[i,j]);
 						heights[i,j] /= publicvar.maxHeight;
 					}
 
-					catch{
+					catch(Exception ex){
+						print(ex.Message + "  \n"+ ex.Data);
 						print("i "+ i + "j "+j);
 						print("index: " +index);
 					}
-					Debug.Log("height AT "+ i+" "+j+"---"+heights[i,j]);
+//					Debug.Log("height AT "+ i+" "+j+"---"+heights[i,j]);
 					index += 4;
 				}
+				// wait for next frame in order not to use too much
+				// time ,making the game running unsoomthly
+				timeNow = new TimeSpan(DateTime.Now.Ticks);
+				deltaTime = timeNow.Subtract(timeOld);
+				if (deltaTime.Milliseconds > 100) {
+					print(deltaTime.Milliseconds);
+					yield return 0;
+				}
 				terraindata.SetHeights (0, 0, heights);
-//				if (i %2 == 0) {					
-//					yield return 0;}
-			}
+			}			
 
 			www.Dispose();
 			www=null;
@@ -137,20 +151,29 @@ public class HeightmapLoader : MonoBehaviour
 			//		从二进制文件中得到数据
 			for(int i = res-1; i>=0; i--)  
 			{  
+				timeOld = new TimeSpan(DateTime.Now.Ticks);
 				for(int j = 0; j<res; j++)  
 				{  	
-					Debug.Log("ij : "+ i + " " + j);
+//					Debug.Log("ij : "+ i + " " + j);
 					heights[i,j] = System.BitConverter.ToSingle(buff, index);
 					if (heights[i,j]>60000) {
 						heights[i,j] = 0;
 					}
 //					Debug.Log("height AT "+ i+" "+j+"---"+heights[i,j]);
-					//
 					heights[i,j] /= publicvar.maxHeight;
 					index += 4;           
-				}  
+					// wait for next frame in order not to use too much
+					// time ,making the game running unsoomthly
+				}
+				// wait for next frame in order not to use too much
+				// time ,making the game running unsoomthly
+				timeNow = new TimeSpan(DateTime.Now.Ticks);
+				deltaTime = timeNow.Subtract(timeOld);
+				if (deltaTime.Milliseconds > 100) {
+					print(deltaTime.Milliseconds);
+					yield return 0;
+				}
 				terraindata.SetHeights (0, 0, heights);
-				yield return 0;
 			}
 			f.Close();
 

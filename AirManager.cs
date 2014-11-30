@@ -23,16 +23,19 @@ public class AirManager : MonoBehaviour
 	}
 
 	public int UpdateOrCreate(JsonData jd){
-		Debug.Log (airs.ToString ());
 		foreach (DictionaryEntry entry  in jd) {
 			string name = (string)entry.Key;
 			JsonData data = (JsonData) entry.Value;
-
+			try{
 			if (airs.ContainsKey(name)) {
 				UpdateAir(name,data);
 			}		
 			else{
 				CreateAir(name, originair, data);
+				}}
+			catch (System.Exception ex){
+				print(ex.Data);
+				print(ex.Message);
 			}
 		
 			return 0;

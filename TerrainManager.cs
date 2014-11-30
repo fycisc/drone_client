@@ -21,12 +21,12 @@ public class TerrainManager : MonoBehaviour
 //---------------------------------------------------------------------------------------
 
 	public void Start(){
-		terrains = GameObject.Find("Connecter").GetComponent<publicvar> ().terrains;
+		terrains = GameObject.Find("publicvar").GetComponent<publicvar> ().terrains;
 		basei = publicvar.basei;
 		basej = publicvar.basej;
 		maxTileX = publicvar.maxTileX;
 		maxTileY = publicvar.maxTileY;
-		heightsloader = GameObject.Find("Connecter").GetComponent<HeightmapLoader>();
+		heightsloader = GameObject.Find("HeightmapLoader").GetComponent<HeightmapLoader>();
 	}
 
 	public Terrain NewTerrainData(TerrainMetaData mdata, TextureData tdata, HeightmapMetaData hdata){
@@ -182,6 +182,8 @@ public class TerrainManager : MonoBehaviour
 				splats[0].tileSize = new Vector2(publicvar.lengthmesh, publicvar.lengthmesh);
 				
 				terraindata.splatPrototypes = splats;
+//				www.assetBundle.Unload(false);
+
 				www.Dispose();
 				www =null;
 			}
