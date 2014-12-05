@@ -34,8 +34,8 @@ public class map //: MonoBehaviour
 	// given 
 	public static float[] getUnityPosfromLatlng(float lon, float lat, int zoom){
 		// get lon, lat length
-		float lonlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[0]-XYToLonLat(publicvar.basei+publicvar.mergenum,publicvar.basej,zoom)[0]);
-		float latlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[1]-XYToLonLat(publicvar.basei,publicvar.basej+publicvar.mergenum,zoom)[1]);
+		float lonlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[0]-XYToLonLat(publicvar.basei+1,publicvar.basej,zoom)[0]);
+		float latlength = Mathf.Abs(XYToLonLat(publicvar.basei,publicvar.basej,zoom)[1]-XYToLonLat(publicvar.basei,publicvar.basej+1,zoom)[1]);
 		
 		// given lon lat
 		// get tileNum
@@ -48,8 +48,8 @@ public class map //: MonoBehaviour
 		float[] deltaLonlat = new float[] {lon- LonlatTopleft[0],lat-LonlatTopleft[1]};
 		
 		// get x,z of topleft
-		float[] posTopleft = new float[]{((tileNum [0] - publicvar.basei) / publicvar.mergenum - 0.5f) * publicvar.lengthmesh,
-			(-(tileNum [1] - publicvar.basej) / publicvar.mergenum + 0.5f) * publicvar.lengthmesh,
+		float[] posTopleft = new float[]{((tileNum [0] - publicvar.basei) - 0.5f) * publicvar.lengthmesh,
+			(-(tileNum [1] - publicvar.basej) + 0.5f) * publicvar.lengthmesh,
 		};
 		
 		// get x,z of the given lon,lat

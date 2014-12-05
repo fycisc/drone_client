@@ -117,12 +117,12 @@ public class connect: MonoBehaviour
 	{
 		//test();
 		Auth=new auth(this);
-		//game0gui.gamelog("正在连接到服务器"+publicvar.ip_addr+"...");
+		//game0gui.gamelog("connecting to the server "+publicvar.ip_addr+"...");
 		IPAddress ip = IPAddress.Parse(publicvar.ip_addr);
         clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		try
 		{
-			clientSocket.Connect(new IPEndPoint(ip, 1026)); //配置服务器IP与端口
+			clientSocket.Connect(new IPEndPoint(ip, 1026)); //config the ip $ port of the server
 			StateObject state = new StateObject();
             state.workSocket = clientSocket;
 
@@ -133,7 +133,7 @@ public class connect: MonoBehaviour
 		}
 		catch
 		{
-			Debug.Log("连接服务器失败，重新连接中");
+			Debug.Log("Falied to connect to the server, connecting....");
 		}
 
 	}

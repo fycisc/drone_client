@@ -64,7 +64,7 @@ public class EventsHandler: MonoBehaviour{
 //	}
 
 	IEnumerator Startloadheightmap(){
-		yield return new WaitForSeconds (8);
+		yield return new WaitForSeconds (6);
 		heightmaploader.Startload ();
 		yield break;
 	}

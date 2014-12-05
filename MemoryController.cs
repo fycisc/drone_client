@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/* This script helps purge the memory when the app/game is not fluent enough
+ */
+
 public class MemoryController : MonoBehaviour
 {
 	public int count;

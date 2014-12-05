@@ -48,9 +48,6 @@ public class TerrainManager : MonoBehaviour
 		// register to the manager
 		terrains.Add(str(tdata.i,tdata.j), terrain);
 
-//		Debug.Log ("terrain postion:" + terrain.transform.position);
-//		Debug.Log ("terrain i j " + tdata.i + ","+ tdata.j);
-//		Debug.Log ("basei: " + basei + " ,basej: " + basej);
 //		System.Threading.Thread.Sleep (500);
 //		heightsloader.Startload ();
 		return terrain;
@@ -90,6 +87,8 @@ public class TerrainManager : MonoBehaviour
 	}
 //----------------------------------------------------------------------------------------
 
+	// Once started ,the function will go through all tiles responsible to be loaded.
+	// and then load those which hasn't been loaded, clean whose which are too far.
 	IEnumerator Updatemap(){
 		int[] center;
 		while (true) {
@@ -106,8 +105,6 @@ public class TerrainManager : MonoBehaviour
 			// flush new tiles
 			center = getCurrentTile(plane);
 			StartCoroutine(FlushNewTiles(center));
-			
-			
 			if (!isUpdating) break;
 		}
 		
@@ -182,29 +179,22 @@ public class TerrainManager : MonoBehaviour
 				splats[0].tileSize = new Vector2(publicvar.lengthmesh, publicvar.lengthmesh);
 				
 				terraindata.splatPrototypes = splats;
-//				www.assetBundle.Unload(false);
-
 				www.Dispose();
 				www =null;
 			}
 		}
+
 
 		// file not exits. load from Internet
 		else{
 			string url = remotemapurl(i,j,publicvar.zoom);
 			www=new WWW(url);
 			yield return www;
-//			Debug.Log(url);
 			if (www.error != null ){
 				print("Error:"+ www.error);
 				yield return www;
 			}
 			else{
-//				Debug.Log("Texture Loaded. Total memory" + GC.GetTotalMemory(true));
-//				if (!Directory.Exists(Application.dataPath+"/map" )){ //判断文件夹是否已经存在
-//					Directory.CreateDirectory(Application.dataPath+"/map");
-//				}
-//				
 				var splats = new SplatPrototype[1];
 				splats[0] = new SplatPrototype();
 				splats[0].texture = www.texture;

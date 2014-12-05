@@ -1,7 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using Leap;
-
+ 
+/* attach this script to a camera object, then when the  camera is active, you can 
+ * navigate the world with mouse control(left/right button & scroll), 
+ * keyboard control(WASD/UpDownLeftRight and command),
+ * and Leap Motion Control
+ *
+ */
 
 public class handsStatus{
 	public Vector3 relativeVelocity;
@@ -135,23 +141,7 @@ public class moveTerrain : MonoBehaviour
 			return;		
 		}
 		}
-
-
-//		void OnGUI(){
-//		// info of LEFT hand
-//			GUI.TextArea (new Rect (10, 10, 50, 50), this.isGrabbed_l.ToString ());
-//			GUI.TextArea (new Rect (100, 10, 50, 50), this.grabstrength_l.ToString());
-//			GUI.TextArea (new Rect (190, 10, 50, 50), this.pinchstrength_l.ToString());
-//		try{
-//			GUI.TextArea (new Rect (300, 10, 50, 50), this.mvMngr.status.ToString());}
-//		catch{
-//			return;}
-//		// info of RIGHT hand
-//			GUI.TextArea (new Rect (500, 10, 50, 50), this.isGrabbed_r.ToString ());
-//			GUI.TextArea (new Rect (590, 10, 50, 50), this.grabstrength_r.ToString());
-//			GUI.TextArea (new Rect (680, 10, 50, 50), this.pinchstrength_r.ToString());
-//		}
-
+	
 	private void updateMouseAction(){
 		updateMouseZoom ();
 		updateMouseDrag ();

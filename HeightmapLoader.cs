@@ -86,7 +86,7 @@ public class HeightmapLoader : MonoBehaviour
 		TimeSpan timeNow ;
 		TimeSpan deltaTime;
 
-		for (int i = 0; i < res; i++) {
+		for (int i = res-1; i >=0; i--) {
 			for (int j = 0; j < res; j++) {
 				heights[i,j]=0f;
 			}
@@ -96,10 +96,11 @@ public class HeightmapLoader : MonoBehaviour
 			WWW www =new WWW("file://" + finfo.FullName);
 			yield return www;
 			byte[] buff = www.bytes;
-
+										
 			int index = 0;
-			for(int i = res-1; i>=0; i--)  
+			for(int i = 0; i<res; i++)  
 			{  
+
 				timeOld = new TimeSpan(DateTime.Now.Ticks);
 				for(int j = 0; j<res; j++)  
 				{  
@@ -108,7 +109,7 @@ public class HeightmapLoader : MonoBehaviour
 						if (heights[i,j]>60000) {
 							heights[i,j] = 0;
 						}
-//						Debug.Log(heights[i,j]);
+						heights[i,j] += 200; // in case the altitude is negative
 						heights[i,j] /= publicvar.maxHeight;
 					}
 
@@ -139,31 +140,36 @@ public class HeightmapLoader : MonoBehaviour
 			WWW www = new WWW (url);
 			yield return www;
 			Debug.Log ("loaded from: " + url);
-			//解析出高度数据
-
-			heights = new float[res, res];
+			/// get altitude data
 			int index = 0;
 			byte[] buff = www.bytes;
-//			File.WriteAllBytes(localpath, buff);
 			FileStream f = File.OpenWrite(localpath);
-			f.Write(buff,0,www.bytesDownloaded);
-//			byte[] bytes = new byte[4];
-			//		从二进制文件中得到数据
+			f.Write(buff,0,buff.Length);
+
+			// get altitude data from binary files
 			for(int i = res-1; i>=0; i--)  
 			{  
 				timeOld = new TimeSpan(DateTime.Now.Ticks);
 				for(int j = 0; j<res; j++)  
 				{  	
-//					Debug.Log("ij : "+ i + " " + j);
-					heights[i,j] = System.BitConverter.ToSingle(buff, index);
-					if (heights[i,j]>60000) {
+					try{					
+						heights[i,j] = System.BitConverter.ToSingle(buff, index);
+					}
+					catch(ArgumentOutOfRangeException e){
+						heights[i,j] = 0f;
+						print("input data is not in correct format(must be 32-bit float)");
+						print (e.Message);
+					}
+
+					heights[i,j] += 200f;// in case the height value is negative	
+					if (heights[i,j]>60000f) {
 						heights[i,j] = 0;
 					}
-//					Debug.Log("height AT "+ i+" "+j+"---"+heights[i,j]);
+					if (heights[i,j]<0) {
+						Debug.Log("negative");
+					}
 					heights[i,j] /= publicvar.maxHeight;
 					index += 4;           
-					// wait for next frame in order not to use too much
-					// time ,making the game running unsoomthly
 				}
 				// wait for next frame in order not to use too much
 				// time ,making the game running unsoomthly
