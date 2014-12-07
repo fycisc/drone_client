@@ -9,6 +9,9 @@ public class CameraManager : MonoBehaviour
 
 	public Camera currentCamera;
 
+	private GameObject dashboard;
+	private GameObject datas;
+
 		// Use this for initialization
 		void Start ()
 		{
@@ -17,6 +20,8 @@ public class CameraManager : MonoBehaviour
 			currentCamera = initCamera;
 			
 			cameras ["airplane"] = GameObject.Find ("airplane").GetComponentInChildren<Camera> ();
+
+		getGUIs ();
 		}
 		// Update is called once per frame
 		void Update ()
@@ -31,6 +36,7 @@ public class CameraManager : MonoBehaviour
 					Camera cam = (Camera)entry.Value;
 					cam.gameObject.SetActive(false);
 				}
+				hideGUIs();
 			}
 			else {
 				initCamera.gameObject.SetActive(false);
@@ -38,6 +44,7 @@ public class CameraManager : MonoBehaviour
 					Camera cam = (Camera)entry.Value;
 					cam.gameObject.SetActive(false);
 				}
+				showGUIs();
 			}
 			ca.gameObject.SetActive(true);
 			currentCamera = ca;
@@ -66,6 +73,21 @@ public class CameraManager : MonoBehaviour
 				} catch (System.Exception ex) {
 			Debug.Log(ex);
 				}
+	}
+
+	public void getGUIs(){
+		this.dashboard = GameObject.Find("zhuangtai");
+		this.datas = GameObject.Find("Status");
+	}
+
+	public void hideGUIs(){
+		this.dashboard.SetActive (false);
+		this.datas.SetActive (false);
+	}
+
+	public void showGUIs(){
+		this.dashboard.SetActive (true);
+		this.datas.SetActive (true);
 	}
 
 

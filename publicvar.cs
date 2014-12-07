@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class publicvar : MonoBehaviour {
 	public GameObject originairplane1; // the model of the plane
 	public GameObject originairplane2;
-
+	public static int zoom = 16; // represent the size of one tile (Cut the whole into 2^zoom x 2^zoom tiles)
 
 	public static string ip_addr = "127.0.0.1";
 	public static string host ="map.dronevery.com:8000";// "127.0.0.1:8000";
@@ -15,10 +15,10 @@ public class publicvar : MonoBehaviour {
 	public static int basei = 27397; // the i of the tile in the Point (0,0,0) // not in use
 	public static int basej = 12285;  // not in use
 
-	public static int zoom = 10; // represent the size of one tile (Cut the whole into 2^zoom x 2^zoom tiles)
+
 
 	public static float lengthmesh_17 = 2296.26f;
-	public static float lengthmesh = lengthmesh_17*Mathf.Pow(2,17-zoom);// the size of one tile in Unity world
+	public static float lengthmesh = lengthmesh_17;//*Mathf.Pow(2,17-zoom);// the size of one tile in Unity world
 
 	public static int loadwidth = 4;
 	public static int maxTileX = loadwidth; // basei-maxTileX < i < basei+maxTileX will be loaded

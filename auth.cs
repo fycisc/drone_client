@@ -51,7 +51,7 @@ public class  auth: MonoBehaviour
 			if (string.Equals(mes,"CONFIRM") )
 			{
 				game0gui.gamelog("认证成功");
-				publicvar.lengthmesh = (float) (double) data["lengthmesh"];
+//				publicvar.lengthmesh = (float) (double) data["lengthmesh"];
 				publicvar.loadwidth = (int) data["loadwidth"];
 //				publicvar.basei = (int) data["basei"];
 //				publicvar.basej = (int) data["basej"];

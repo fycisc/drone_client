@@ -44,7 +44,6 @@ public class TerrainManager : MonoBehaviour
 		Terrain terrain = terrainobject.GetComponent<Terrain> ();
 		terraindata.size = new Vector3 (publicvar.lengthmesh, publicvar.maxHeight, publicvar.lengthmesh);
 		terrain.transform.position = new Vector3 (xz[0],0,xz[1]);
-		terrain.gameObject.GetComponent<TerrainCollider> ().isTrigger = true;
 		// register to the manager
 		terrains.Add(str(tdata.i,tdata.j), terrain);
 

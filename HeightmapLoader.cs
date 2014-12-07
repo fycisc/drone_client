@@ -85,6 +85,7 @@ public class HeightmapLoader : MonoBehaviour
 		TimeSpan timeOld ;
 		TimeSpan timeNow ;
 		TimeSpan deltaTime;
+		float k = (float)(Math.Pow (2, 17 - publicvar.zoom));
 
 		for (int i = res-1; i >=0; i--) {
 			for (int j = 0; j < res; j++) {
@@ -98,7 +99,7 @@ public class HeightmapLoader : MonoBehaviour
 			byte[] buff = www.bytes;
 										
 			int index = 0;
-			for(int i = 0; i<res; i++)  
+			for(int i = res-1; i>=0; i--)   
 			{  
 
 				timeOld = new TimeSpan(DateTime.Now.Ticks);
@@ -109,8 +110,10 @@ public class HeightmapLoader : MonoBehaviour
 						if (heights[i,j]>60000) {
 							heights[i,j] = 0;
 						}
-						heights[i,j] += 200; // in case the altitude is negative
-						heights[i,j] /= publicvar.maxHeight;
+						heights[i,j] += 200f;// in case the height value is negative	
+						heights[i,j] /= (publicvar.maxHeight*2f*k);
+						Debug.Log(heights[i,j]);
+
 					}
 
 					catch(Exception ex){
@@ -168,7 +171,9 @@ public class HeightmapLoader : MonoBehaviour
 					if (heights[i,j]<0) {
 						Debug.Log("negative");
 					}
-					heights[i,j] /= publicvar.maxHeight;
+
+					heights[i,j] /= (publicvar.maxHeight*2f*k);
+
 					index += 4;           
 				}
 				// wait for next frame in order not to use too much

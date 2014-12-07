@@ -3,8 +3,8 @@ using System.Collections;
 
 public class TerrainMetaData
 {
-	public float width = 2304f;
-	public float length = 2304f;
+	public float width = publicvar.lengthmesh;
+	public float length = publicvar.lengthmesh;
 	public float[] position = {0f, 0f};
 	public float latmin = 31f;
 	public float latmax = 32f;
@@ -19,5 +19,6 @@ public class TerrainMetaData
 	}
 	public TerrainMetaData(){
 	}
+
 }
 

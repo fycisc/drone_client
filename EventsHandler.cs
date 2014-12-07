@@ -7,9 +7,7 @@ using System.Globalization;
 
 public class EventsHandler: MonoBehaviour{
 	// THIS IS THE CORE OF THE ENTIRE GAME
-		
-//	public static Dictionary<string,airobj> aircluster= new Dictionary<string,airobj>();
-//	private Dictionary<int[], Terrain> terrains = publicvar.terrains;
+
 	private Dictionary<string, airobj> airs;
 	private AirManager airmanager;
 	private publicvar publicv;
@@ -22,8 +20,6 @@ public class EventsHandler: MonoBehaviour{
 		connect.connected += this.OnConnected;
 		connect.report += this.OnReport;
 		connect.receiveGamedata += this.OnReceiveGamedata;
-
-//		publicv = gameObject.AddComponent<publicvar> ();
 
 	// 2. Initialize Global varibles
 		try{
@@ -54,14 +50,7 @@ public class EventsHandler: MonoBehaviour{
 
 		StartCoroutine (Startloadheightmap());
 
-//		createtestair ();
-
 	}
-//
-//	public void createtestair(){
-//
-//		airobj airplane = new airobj(GameObject.Find("airplane"));
-//	}
 
 	IEnumerator Startloadheightmap(){
 		yield return new WaitForSeconds (6);
